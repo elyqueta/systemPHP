@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: systemphp_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: systemphp
+      MYSQL_USER: systemphp_app
+      MYSQL_PASSWORD: trocaesta
+      MYSQL_ROOT_PASSWORD: trocaestatambem
+    ports:
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - systemphp_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  systemphp_db_data:
