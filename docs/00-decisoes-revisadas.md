@@ -184,3 +184,12 @@ valores ser escrita, três pontos continuam por confirmar:
 Enquanto estes três pontos não estiverem confirmados, não existe
 `docs/fases/FASE-5-*.md`. Não escrever nenhuma lógica de cálculo fiscal
 com base em suposições.
+
+**Actualização de 14/09/2026**: os três pontos pendentes foram
+confirmados. A tabela do IRT foi validada byte a byte contra o Anexo I
+(art. 21.º) da Lei n.º 14/25, de 30 de Dezembro de 2025 (OGE 2026),
+em vigor desde 01/01/2026. A aparente inconsistência entre o 1.º e o
+2.º escalão é do próprio legislador, não um erro de transcrição — a
+partir do 3.º escalão a fórmula cumulativa fecha exactamente. As taxas
+de INSS mantêm-se em 3%/8%. A Fase 5 está descrita em
+`docs/fases/FASE-5-modulo-payroll-irt-inss.md`.

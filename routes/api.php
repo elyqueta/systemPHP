@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\InstitutionController;
+use App\Http\Controllers\Api\V1\PayrollController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -28,6 +29,9 @@ Route::prefix('v1')->group(function () {
         Route::post('/institutions/{institution}/activate', [InstitutionController::class, 'activate'])
             ->where('institution', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
         Route::post('/institutions/{institution}/deactivate', [InstitutionController::class, 'deactivate'])
+            ->where('institution', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+
+        Route::post('/institutions/{institution}/payroll/calculate', [PayrollController::class, 'calculate'])
             ->where('institution', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
     });
 });
