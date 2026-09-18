@@ -16,6 +16,7 @@ class Institution extends Model
         'name', 'commercial_name', 'tax_id', 'institution_type',
         'founding_date', 'phone', 'email', 'website',
         'address', 'neighborhood', 'city', 'province_id', 'municipality_id',
+        'active',
     ];
 
     public function taxConfiguration(): HasOne

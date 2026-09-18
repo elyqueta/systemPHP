@@ -30,7 +30,11 @@ class CalculateNetSalaryAction
             ->first();
 
         if (! $bracket) {
-            throw new RuntimeException('Não foi possível determinar o escalão de IRT aplicável.');
+            $effectiveFrom = TaxIrtBracket::query()
+                ->where('effective_from', '<=', ($referenceDate ?? now()))
+                ->max('effective_from');
+
+            throw new RuntimeException('Não foi possível determinar o escalão de IRT aplicável para o rendimento tributável ' . $taxableIncome . '. Verifique se a tabela tax_irt_brackets tem dados para a data ' . ($referenceDate ?? 'hoje') . '.');
         }
 
         $irtAmount = (float) $bracket->fixed_amount
