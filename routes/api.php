@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Admin\IrtBracketController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\InstitutionController;
 use App\Http\Controllers\Api\V1\PayrollController;
@@ -33,5 +34,16 @@ Route::prefix('v1')->group(function () {
 
         Route::post('/institutions/{institution}/payroll/calculate', [PayrollController::class, 'calculate'])
             ->where('institution', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+
+        Route::middleware('super_admin')->prefix('admin')->group(function () {
+            Route::get('/irt-brackets', [IrtBracketController::class, 'index']);
+            Route::post('/irt-brackets', [IrtBracketController::class, 'store']);
+            Route::get('/irt-brackets/{irtBracket}', [IrtBracketController::class, 'show'])
+                ->where('irtBracket', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+            Route::put('/irt-brackets/{irtBracket}', [IrtBracketController::class, 'update'])
+                ->where('irtBracket', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+            Route::delete('/irt-brackets/{irtBracket}', [IrtBracketController::class, 'destroy'])
+                ->where('irtBracket', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+        });
     });
 });

@@ -20,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+
+        $middleware->alias([
+            'super_admin' => \App\Http\Middleware\EnsureSuperAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
@@ -36,14 +40,20 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (AccessDeniedHttpException $e, Request $request) {
-            if ($request->is('admin/*')) {
-                return response()->view('admin.errors.403', [], 403);
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Não tem permissão para aceder a este recurso.',
+                ], 403);
             }
         });
 
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if ($request->is('admin/*')) {
-                return response()->view('admin.errors.404', [], 404);
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Rota ou recurso não encontrado.',
+                ], 404);
             }
         });
 
@@ -53,10 +63,6 @@ return Application::configure(basePath: dirname(__DIR__))
                     'status' => 'error',
                     'message' => 'Registo não encontrado.',
                 ], 404);
-            }
-
-            if ($request->is('admin/*')) {
-                return response()->view('admin.errors.404', [], 404);
             }
         });
 
@@ -77,14 +83,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (HttpException $e, Request $request) {
             if ($e instanceof ModelNotFoundException || str_contains($e->getMessage(), 'No query results for model')) {
-                if ($request->is('admin/*')) {
-                    return response()->view('admin.errors.404', [], 404);
+                if ($request->is('api/*')) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Registo não encontrado.',
+                    ], 404);
                 }
-
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Registo não encontrado.',
-                ], 404);
             }
 
             if ($e instanceof NotFoundHttpException && $request->is('api/*')) {
